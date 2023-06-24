@@ -2,8 +2,8 @@ import os
 import sys
 from src.exception import CustomException
 from src.logger import logging
-from src.components.data_transformation import DataTransformation
-from src.components.data_transformation import DataTransformationConfig
+from src.components.data_transformation import DataTransformation, DataTransformationConfig
+from src.components.model_trainer import ModelTrainerConfig, ModelTrainer
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
@@ -45,6 +45,19 @@ class DataIngestion:
 if __name__ == '__main__':
     obj = DataIngestion()
     train_data, test_data = obj.initate_data_ingestion()
+    
     data_transform = DataTransformation()
-    data_transform.initiate_data_transformation(train_path=train_data,
-                                                test_path=test_data)
+    train_array, test_array, _ = data_transform.initiate_data_transformation(train_path=train_data,
+                                                                             test_path=test_data)
+    
+    model_trainer = ModelTrainer()
+    
+    train_rank, test_rank, best_model = model_trainer.initiate_model_trainer(train_array=train_array, 
+                                                                             test_array=test_array)
+    
+    print(f'Evaluation of the best model: {best_model} on training set: {train_rank[0]}, on testing set: {test_rank[0]}')
+    
+
+    
+    
+    
