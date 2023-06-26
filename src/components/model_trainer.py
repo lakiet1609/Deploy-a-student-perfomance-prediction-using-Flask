@@ -30,7 +30,6 @@ class ModelTrainer:
                 'Ridge CV': RidgeCV(),
                 'Linear Regression': LinearRegression(),
                 'Ridge': Ridge(max_iter=100000),
-                # 'SGD Regressor': SGDRegressor(max_iter=100000)
             }
             
             params = {
@@ -52,16 +51,7 @@ class ModelTrainer:
                     'alpha': [0.1, 0.5, 1.0, 2.0, 5.0, 10.0],
                     'tol': [0.1, 0.01, 0.001],
                     'solver': ['auto', 'lsqr', 'sparse_cg', 'sag', 'saga']
-                },
-                
-                # "SGD Regressor": {
-                #     'loss': ['squared_error', 'huber', 'epsilon_insensitive', 'squared_epsilon_insensitive'],
-                #     'penalty': ['l2', 'l1', 'elasticnet', None],
-                #     'alpha': [0.0001, 0.001, 0.01, 0.1, 1],
-                #     'l1_ratio': [0, 0,1, 0.15, 0.25, 0.5, 0.75, 1],
-                #     'tol': [0.1, 0.01, 0.001, None],
-                #     'learning_rate': ['constant', 'optimal', 'adaptive', 'invscaling']
-                # }
+                }           
             }
      
 
@@ -77,7 +67,8 @@ class ModelTrainer:
             
             rank_test_score = sorted(test_report.items(), key=lambda x:x[1][0], reverse=True)
             
-            best_model = rank_test_score[0][0]
+            best_model_name = rank_test_score[0][0]
+            best_model = models[best_model_name]
             
             logging.info('Found the best model')
             
@@ -86,7 +77,7 @@ class ModelTrainer:
                 obj=best_model
             )
             
-            return rank_train_score, rank_test_score, best_model
+            return rank_train_score, rank_test_score, best_model_name
                     
         except Exception as e:
             raise CustomException(e,sys)

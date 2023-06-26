@@ -22,9 +22,9 @@ class DataTransformation:
     
     def get_transformed(self):
         try:
-            numerical_features = ['writing score', 'reading score']
-            nominal_features = ['gender', 'race/ethnicity', 'lunch', 'test preparation course']
-            ordinal_features = ['parental level of education']
+            numerical_features = ['writing_score', 'reading_score']
+            nominal_features = ['gender', 'race_ethnicity', 'lunch', 'test_preparation_course']
+            ordinal_features = ['parental_level_of_education']
             
             num_pipeline = Pipeline(steps=[
                 ('imputer', SimpleImputer(strategy='median')),
@@ -60,7 +60,10 @@ class DataTransformation:
     def initiate_data_transformation(self, train_path, test_path):
         try:
             train_df = pd.read_csv(train_path)
+            print(train_df.columns)
+            
             test_df = pd.read_csv(test_path)
+            print(test_df.columns)
             
             logging.info('Read train and test data completed')
             
@@ -68,7 +71,7 @@ class DataTransformation:
             
             preprocessing_data = self.get_transformed()
             
-            target_features = 'math score'
+            target_features = 'math_score'
             
             X_train = train_df.drop(columns=[target_features], axis=1)
             y_train = train_df[target_features]
